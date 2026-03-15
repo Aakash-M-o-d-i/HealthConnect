@@ -1,9 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import {
-    MOCK_USERS,
-    simulateDelay,
-    generateUHID,
-} from '../services/mockData';
+import api from '../services/api';
 
 const AuthContext = createContext();
 
@@ -30,35 +26,32 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = async (email, password) => {
-        await simulateDelay(800);
-        const found = MOCK_USERS.find(
-            (u) => u.email === email && u.password === password && u.role === 'patient'
-        );
-        if (!found) {
-            throw new Error('Invalid email or password');
+        try {
+            const response = await api.post('/auth/login', { email, password });
+            const { token: jwtToken, user: userData } = response.data;
+            
+            setToken(jwtToken);
+            setUser(userData);
+            localStorage.setItem('access_token', jwtToken);
+            localStorage.setItem('user', JSON.stringify(userData));
+            return userData;
+        } catch (error) {
+            console.error("Login failed", error);
+            throw new Error(error.response?.data?.message || 'Invalid email or password');
         }
-        const fakeToken = btoa(`${found.id}:${Date.now()}`);
-        setToken(fakeToken);
-        setUser(found);
-        localStorage.setItem('access_token', fakeToken);
-        localStorage.setItem('user', JSON.stringify(found));
-        return found;
     };
 
     const register = async (formData) => {
-        await simulateDelay(1000);
-        if (MOCK_USERS.find((u) => u.email === formData.email)) {
-            throw new Error('Email already registered');
+        try {
+            const response = await api.post('/auth/register', formData);
+            const { token: jwtToken, user: userData } = response.data;
+            
+            // Only login immediately if UI expects it. Our context here expects a returned user block
+            return { ...userData };
+        } catch (error) {
+            console.error("Registration failed", error);
+            throw new Error(error.response?.data?.message || 'Registration failed');
         }
-        const health_id = generateUHID();
-        const newUser = {
-            id: MOCK_USERS.length + 1,
-            ...formData,
-            health_id,
-            role: 'patient',
-        };
-        MOCK_USERS.push(newUser);
-        return { ...newUser };
     };
 
     const logout = () => {

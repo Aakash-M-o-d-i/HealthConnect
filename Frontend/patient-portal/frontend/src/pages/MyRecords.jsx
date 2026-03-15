@@ -7,7 +7,7 @@ import {
     FileCheck
 } from 'lucide-react';
 import Sidebar from '../components/common/Sidebar';
-import { MOCK_RECORDS, simulateDelay } from '../services/mockData';
+import api from '../services/api';
 
 const MyRecords = ({ darkMode, setDarkMode }) => {
     const [records, setRecords] = useState([]);
@@ -18,9 +18,25 @@ const MyRecords = ({ darkMode, setDarkMode }) => {
 
     useEffect(() => {
         const load = async () => {
-            await simulateDelay(800);
-            setRecords(MOCK_RECORDS);
-            setLoading(false);
+            try {
+                const response = await api.get('/patient/records');
+                // The backend provides doctor_name but UI currently uses doctor
+                const formattedRecords = response.data.map(record => ({
+                    ...record,
+                    doctor: record.doctor_name || record.doctor,
+                    // The backend provides type ("LAB", "SCAN") but UI uses category
+                    category: record.type === 'LAB' ? 'Lab Report' :
+                              record.type === 'SCAN' ? 'Lab Report' : 
+                              record.type === 'SCRIPT' ? 'Prescription' :
+                              record.type === 'DISCHARGE' ? 'Clinical Note' :
+                              record.type === 'VACCINE' ? 'Vaccination' : 'Clinical Note'
+                }));
+                setRecords(formattedRecords);
+            } catch (error) {
+                console.error("Failed to load records:", error);
+            } finally {
+                setLoading(false);
+            }
         };
         load();
     }, []);

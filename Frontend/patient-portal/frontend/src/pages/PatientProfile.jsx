@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import Sidebar from '../components/common/Sidebar';
-import { simulateDelay } from '../services/mockData';
+import api from '../services/api';
 
 const PatientProfile = ({ darkMode, setDarkMode }) => {
     const { user } = useAuth();
@@ -18,22 +18,29 @@ const PatientProfile = ({ darkMode, setDarkMode }) => {
 
     useEffect(() => {
         const load = async () => {
-            await simulateDelay(600);
-            setForm({
-                name: user?.name || '',
-                phone: user?.phone || '',
-                dob: user?.dob || '',
-                gender: user?.gender || '',
-                address: user?.address || '24/B, Garden Residency, Satellite',
-                city: user?.city || 'Ahmedabad',
-                state: user?.state || 'Gujarat',
-                pincode: user?.pincode || '380015',
-                blood_group: user?.blood_group || 'B+',
-                allergies: (user?.allergies || ['Penicillin', 'Dust']).join(', '),
-                chronic_conditions: (user?.chronic_conditions || ['None']).join(', '),
-                emergency_contact: user?.emergency_contact || 'Priya Modi (Wife) +91 98989 12345',
-            });
-            setLoading(false);
+            try {
+                const response = await api.get('/patient/profile');
+                const profile = response.data;
+                // If the user hasn't set fields yet, the db could be null, we inject empty strings
+                setForm({
+                    name: profile?.name || '',
+                    phone: profile?.phone || '',
+                    dob: profile?.dob || '',
+                    gender: profile?.gender || '',
+                    address: profile?.address || '',
+                    city: profile?.city || '',
+                    state: profile?.state || '',
+                    pincode: profile?.pincode || '',
+                    blood_group: profile?.blood_group || '',
+                    allergies: (profile?.allergies || []).join(', '),
+                    chronic_conditions: (profile?.chronic_conditions || []).join(', '),
+                    emergency_contact: profile?.emergency_contact || '',
+                });
+            } catch (error) {
+                console.error("Failed to load profile", error);
+            } finally {
+                setLoading(false);
+            }
         };
         load();
     }, [user]);
@@ -43,10 +50,21 @@ const PatientProfile = ({ darkMode, setDarkMode }) => {
     };
 
     const handleSave = async () => {
-        await simulateDelay(500);
-        setSaved(true);
-        setEditing(false);
-        setTimeout(() => setSaved(false), 3000);
+        try {
+            // Need to convert comma separated strings back to arrays for backend
+            const payload = {
+                ...form,
+                allergies: form.allergies.split(',').map(s => s.trim()).filter(Boolean),
+                chronic_conditions: form.chronic_conditions.split(',').map(s => s.trim()).filter(Boolean)
+            };
+            await api.patch('/patient/profile', payload);
+            setSaved(true);
+            setEditing(false);
+            setTimeout(() => setSaved(false), 3000);
+        } catch (error) {
+            console.error("Failed to update profile", error);
+            alert("Could not save profile changes.");
+        }
     };
 
     const initials = user?.name

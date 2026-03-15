@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import Sidebar from '../components/common/Sidebar';
-import { MOCK_STATS, MOCK_VISITS, simulateDelay } from '../services/mockData';
+import api from '../services/api';
 
 const PatientDashboard = ({ darkMode, setDarkMode }) => {
     const { user } = useAuth();
@@ -18,10 +18,21 @@ const PatientDashboard = ({ darkMode, setDarkMode }) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            await simulateDelay(600);
-            setStats(MOCK_STATS);
-            setVisits(MOCK_VISITS);
-            setLoading(false);
+            try {
+                const [statsRes, visitsRes] = await Promise.all([
+                    api.get('/patient/stats'),
+                    api.get('/patient/visits')
+                ]);
+                setStats(statsRes.data);
+                setVisits(visitsRes.data);
+            } catch (error) {
+                console.error("Failed to fetch dashboard data:", error);
+                // Fallback empty state on error
+                setStats({ medical_records: 0, prescriptions: 0, upcoming_visits: 0, health_score: 0 });
+                setVisits([]);
+            } finally {
+                setLoading(false);
+            }
         };
         fetchData();
     }, []);
@@ -125,7 +136,11 @@ const PatientDashboard = ({ darkMode, setDarkMode }) => {
                                 ? <><Check size={16} strokeWidth={3} /> Copied!</>
                                 : <><Copy size={16} strokeWidth={2.5} /> COPY IDENTIFIER</>}
                         </button>
-                        <button className="health-id-btn" style={{ background: 'rgba(255,255,255,0.1)', color: 'white', border: '1.5px solid rgba(255,255,255,0.25)', padding: '10px 20px', borderRadius: '10px', fontWeight: '700' }}>
+                        <button 
+                            className="health-id-btn" 
+                            onClick={() => alert(`Downloading Health ID Card for ${user?.health_id}.pdf`)}
+                            style={{ background: 'rgba(255,255,255,0.1)', color: 'white', border: '1.5px solid rgba(255,255,255,0.25)', padding: '10px 20px', borderRadius: '10px', fontWeight: '700' }}
+                        >
                             <QrCode size={16} /> DOWNLOAD CARD
                         </button>
                     </div>
@@ -254,12 +269,16 @@ const PatientDashboard = ({ darkMode, setDarkMode }) => {
                                 <h4 style={{ margin: 0, fontWeight: '800', fontFamily: 'Outfit, sans-serif' }}>VIRTUAL CARE</h4>
                             </div>
                             <p style={{ fontSize: '14px', opacity: 0.9, lineHeight: '1.5', marginBottom: '24px' }}>Book a 24/7 consultation with specialists starting from ₹99.</p>
-                            <button style={{
-                                background: 'white', color: 'var(--primary)',
-                                width: '100%', padding: '12px', borderRadius: '12px',
-                                border: 'none', fontWeight: '800', fontSize: '14px',
-                                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'
-                            }}>
+                            <button 
+                                onClick={() => alert("Launching 24/7 Virtual Care portal... (Feature arriving soon!)")}
+                                style={{
+                                    background: 'white', color: 'var(--primary)',
+                                    width: '100%', padding: '12px', borderRadius: '12px',
+                                    border: 'none', fontWeight: '800', fontSize: '14px',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                                    cursor: 'pointer'
+                                }}
+                            >
                                 Book Now <ArrowUpRight size={16} />
                             </button>
                         </div>

@@ -6,7 +6,7 @@ import {
     Activity, Receipt
 } from 'lucide-react';
 import Sidebar from '../components/common/Sidebar';
-import { MOCK_PRESCRIPTIONS, simulateDelay } from '../services/mockData';
+import api from '../services/api';
 
 const STATUS_CONFIG = {
     pending: { label: 'PENDING DISPENSAL', Icon: Clock, bg: 'rgba(249, 171, 0, 0.08)', color: '#d97706' },
@@ -23,9 +23,18 @@ const MyPrescriptions = ({ darkMode, setDarkMode }) => {
 
     useEffect(() => {
         const load = async () => {
-            await simulateDelay(600);
-            setAllRx(MOCK_PRESCRIPTIONS);
-            setLoading(false);
+            try {
+                const response = await api.get('/patient/prescriptions');
+                const formattedRx = response.data.map(rx => ({
+                    ...rx,
+                    doctor: rx.doctor_name || rx.doctor
+                }));
+                setAllRx(formattedRx);
+            } catch (error) {
+                console.error("Failed to load prescriptions", error);
+            } finally {
+                setLoading(false);
+            }
         };
         load();
     }, []);
@@ -195,7 +204,11 @@ const MyPrescriptions = ({ darkMode, setDarkMode }) => {
                             <div style={{ fontSize: '15px', opacity: 0.9, marginTop: '4px', fontWeight: '500' }}>Connect with our certified pharmacologists for help with your prescriptions.</div>
                         </div>
                     </div>
-                    <button className="btn" style={{ background: 'white', color: 'var(--primary)', padding: '14px 32px', borderRadius: '14px', fontWeight: '800', border: 'none', boxShadow: '0 4px 10px rgba(0,0,0,0.1)' }}>
+                    <button 
+                        className="btn" 
+                        onClick={() => alert("Connecting to a verified pharmacologist... (Feature arriving soon!)")}
+                        style={{ background: 'white', color: 'var(--primary)', padding: '14px 32px', borderRadius: '14px', fontWeight: '800', border: 'none', boxShadow: '0 4px 10px rgba(0,0,0,0.1)', cursor: 'pointer' }}
+                    >
                         Chat with Pharmacy
                     </button>
                 </div>
