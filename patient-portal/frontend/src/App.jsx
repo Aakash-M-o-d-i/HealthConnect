@@ -7,7 +7,11 @@ import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import PatientRegister from './pages/PatientRegister';
 import RegistrationSuccess from './pages/RegistrationSuccess';
-
+import PatientDashboard from './pages/PatientDashboard';
+import MyRecords from './pages/MyRecords';
+import MyPrescriptions from './pages/MyPrescriptions';
+import PatientProfile from './pages/PatientProfile';
+import AboutPage from './pages/AboutPage';
 
 function App() {
   const [darkMode, setDarkMode] = useState(() => {
