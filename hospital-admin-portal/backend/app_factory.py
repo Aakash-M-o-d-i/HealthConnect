@@ -24,12 +24,10 @@ def create_app(config=None):
     from routes.admin import admin_bp
     from routes.doctors import doctors_bp
     from routes.pharmacies import pharmacies_bp
-    from routes.staff import staff_bp
     
     app.register_blueprint(admin_bp, url_prefix='/api/admin')
     app.register_blueprint(doctors_bp, url_prefix='/api/doctors')
     app.register_blueprint(pharmacies_bp, url_prefix='/api/pharmacies')
-    app.register_blueprint(staff_bp, url_prefix='/api/staff')
 
     # Create tables
     with app.app_context():
