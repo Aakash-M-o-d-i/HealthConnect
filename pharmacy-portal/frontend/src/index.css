@@ -9,7 +9,7 @@
 
 @layer base {
     :root {
-        --background: #ffffff;
+        --background: #f8fafc;
         --foreground: #0f172a;
         --card: #ffffff;
         --card-foreground: #0f172a;
@@ -19,7 +19,7 @@
         --primary-foreground: #ffffff;
         --secondary: #f1f5f9;
         --secondary-foreground: #0f172a;
-        --muted: #f1f5f9;
+        --muted: #f8fafc;
         --muted-foreground: #64748b;
         --accent: #f1f5f9;
         --accent-foreground: #0f172a;
@@ -30,35 +30,24 @@
         --warning: #f59e0b;
         --warning-foreground: #ffffff;
         --border: #e2e8f0;
-        --input: #e2e8f0;
+        --input: #f1f5f9;
         --ring: #1978e5;
-        --radius: 0.5rem;
+        --radius: 0.75rem;
     }
 
     .dark {
-        --background: #0f172a;
-        --foreground: #f8fafc;
-        --card: #1e293b;
-        --card-foreground: #f8fafc;
-        --popover: #0f172a;
-        --popover-foreground: #f8fafc;
+        /* Support light aesthetic even in dark mode for this portal */
+        --background: #f8fafc;
+        --foreground: #0f172a;
+        --card: #ffffff;
+        --card-foreground: #0f172a;
+        --border: #e2e8f0;
         --primary: #1978e5;
         --primary-foreground: #ffffff;
-        --secondary: #1e293b;
-        --secondary-foreground: #f8fafc;
-        --muted: #1e293b;
-        --muted-foreground: #94a3b8;
-        --accent: #1e293b;
-        --accent-foreground: #f8fafc;
-        --destructive: #7f1d1d;
-        --destructive-foreground: #f8fafc;
-        --success: #10b981;
-        --success-foreground: #ffffff;
-        --warning: #f59e0b;
-        --warning-foreground: #ffffff;
-        --border: #1e293b;
-        --input: #1e293b;
-        --ring: #1978e5;
+        --secondary: #f1f5f9;
+        --secondary-foreground: #0f172a;
+        --muted: #f1f5f9;
+        --muted-foreground: #64748b;
     }
 }
 
@@ -71,6 +60,8 @@
         background-color: var(--background);
         color: var(--foreground);
         font-family: var(--font-inter);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
 
     h1,
@@ -83,14 +74,13 @@
     }
 }
 
-/* Custom Utilities */
+/* Custom Utilities - Solid Aesthetic */
 @utility glass {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
 }
 
 .dark .glass {
-    background: rgba(15, 23, 42, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
 }
