@@ -21,7 +21,6 @@ const Navbar = () => {
         { name: "Dashboard", href: "/", icon: LayoutDashboard },
         { name: "Doctors", href: "/doctors", icon: Users },
         { name: "Pharmacies", href: "/pharmacies", icon: ShieldCheck },
-        { name: "Staff", href: "/staff", icon: Users },
         { name: "Settings", href: "/settings", icon: Settings },
     ];
 

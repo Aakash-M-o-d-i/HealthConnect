@@ -2,6 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import Layout from './components/Layout';
+import Dashboard from './pages/Dashboard';
+import ManageDoctors from './pages/ManageDoctors';
+import ManagePharmacies from './pages/ManagePharmacies';
 
 import './index.css';
 
@@ -25,7 +28,6 @@ const App = () => {
           <Route path="/" element={<PageWrapper><Dashboard /></PageWrapper>} />
           <Route path="/doctors" element={<PageWrapper><ManageDoctors /></PageWrapper>} />
           <Route path="/pharmacies" element={<PageWrapper><ManagePharmacies /></PageWrapper>} />
-          <Route path="/staff" element={<PageWrapper><ManageStaff /></PageWrapper>} />
           {/* Settings page could be added here if needed */}
           <Route path="/settings" element={<PageWrapper><div className="text-google-grey-600">Settings Page Coming Soon...</div></PageWrapper>} />
         </Routes>
