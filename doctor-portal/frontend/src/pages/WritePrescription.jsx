@@ -72,6 +72,14 @@ const WritePrescription = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Validate mandatory fields
+        const isInvalid = medicines.some(med => !med.name || !med.dosage || !med.duration);
+        if (isInvalid) {
+            alert("Please fill in all mandatory fields (Medicine Name, Dosage, and Duration) for each entry.");
+            return;
+        }
+
         setIsSubmitting(true);
 
         try {

@@ -51,22 +51,21 @@
         --radius: 0.75rem;
     }
 
-    /* Force Light Mode Aesthetic globally for Hospital Admin */
     .dark {
-        --background: #f8fafc;
-        --foreground: #0f172a;
-        --card: #ffffff;
-        --card-foreground: #0f172a;
-        --popover: #ffffff;
-        --popover-foreground: #0f172a;
-        --secondary: #f1f5f9;
-        --secondary-foreground: #0f172a;
-        --muted: #f1f5f9;
-        --muted-foreground: #64748b;
-        --accent: #f1f5f9;
-        --accent-foreground: #0f172a;
-        --border: #e2e8f0;
-        --input: #e2e8f0;
+        --background: #0f172a;
+        --foreground: #f8fafc;
+        --card: #1e293b;
+        --card-foreground: #f8fafc;
+        --popover: #0f172a;
+        --popover-foreground: #f8fafc;
+        --secondary: #1e293b;
+        --secondary-foreground: #f8fafc;
+        --muted: #1e293b;
+        --muted-foreground: #94a3b8;
+        --accent: #1e293b;
+        --accent-foreground: #f8fafc;
+        --border: #334155;
+        --input: #1e293b;
     }
 }
 
@@ -97,8 +96,8 @@
 }
 
 .dark .glass {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
+    background: #1e293b;
+    border: 1px solid #334155;
 }
 
 /* Scrollbar Utility */

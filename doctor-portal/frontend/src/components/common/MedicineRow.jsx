@@ -51,7 +51,7 @@ const MedicineRow = ({ medicine, index, updateMedicine, removeMedicine }) => {
                 {/* Medicine Name */}
                 <div className="lg:col-span-5 space-y-2">
                     <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider ml-1 flex items-center gap-1.5">
-                        <Pill size={12} className="text-primary" /> Medicine Name
+                        <Pill size={12} className="text-primary" /> Medicine Name <span className="text-destructive">*</span>
                     </label>
                     <input
                         type="text"
@@ -72,7 +72,7 @@ const MedicineRow = ({ medicine, index, updateMedicine, removeMedicine }) => {
                 {/* Dosage */}
                 <div className="lg:col-span-3 space-y-2">
                     <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider ml-1 flex items-center gap-1.5">
-                        <Clock size={12} /> Dosage (M-A-N)
+                        <Clock size={12} /> Dosage (M-A-N) <span className="text-destructive">*</span>
                     </label>
                     <input
                         type="text"
@@ -87,7 +87,7 @@ const MedicineRow = ({ medicine, index, updateMedicine, removeMedicine }) => {
                 {/* Duration */}
                 <div className="lg:col-span-4 space-y-2">
                     <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider ml-1 flex items-center gap-1.5">
-                        <Calendar size={12} /> Duration
+                        <Calendar size={12} /> Duration <span className="text-destructive">*</span>
                     </label>
                     <input
                         type="text"

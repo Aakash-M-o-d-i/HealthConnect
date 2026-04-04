@@ -3,7 +3,6 @@ import {
   Users, 
   ShieldCheck, 
   Activity, 
-  Plus, 
   Calendar, 
   ArrowRight,
   ChevronRight,
@@ -136,7 +135,6 @@ const Dashboard = () => {
         </div>
         <div className="flex items-center gap-3">
           <Button variant="outline" icon={RefreshCw} onClick={fetchDashboardData} loading={loading}>Sync Network</Button>
-          <Button icon={Plus}>Manual Activity</Button>
         </div>
       </div>
 
