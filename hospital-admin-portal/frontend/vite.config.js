@@ -9,6 +9,6 @@ export default defineConfig({
     tailwindcss(),
   ],
   server: {
-    port: 5174,
+    port: 5176,
   },
 })
